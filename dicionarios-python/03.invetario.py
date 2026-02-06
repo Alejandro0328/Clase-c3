@@ -18,7 +18,7 @@ def menu():
 """)
 def cargar_datos(dic_inv):
     dic_inv={
-        "mart001":{
+        "MART001":{
             "nombre": "Martillo de uña",
             "precio": 15000,
             "stock":25,
@@ -40,7 +40,7 @@ def cargar_datos(dic_inv):
     return dic_inv
 def agragar_prd(dinv):
     print("\n\n1. Agregar Producto\n\n")
-    cod = input("Còdigo del producto : ")
+    cod = input("Còdigo del producto : ").upper()
     #verificar que ya no exista en el dicionario
     if cod in dinv:
         print(f"Error . el producto còdigo { cod} ya existe. ")
@@ -72,8 +72,21 @@ def consultar_todos(dinv):
 
 def consultar_prd(dinv):
     print("\n\n2. Consultar Producto\n\n")
-    if not dinv:
-        print("Ingrese")
+    cod= input("Ingrese el código a buscar: ").strip().upper()
+    if cod in dinv:
+        p = dinv[cod]
+        print(f"Nombre: {p['nombre']}")
+        print(f"Precio: $ {p['precio']}")
+        print(f"Stock: {p['stock']} Unidades")
+    else:
+        print("Ese producto no esta en el sistema")
+
+def eliminar_producto(dinv):
+    print("")
+    cod=input("Código del producto a eliminar: ").upper()
+    if cod not in dinv:
+        print("Este producto no existe......")
+        return dinv
 
 
 
