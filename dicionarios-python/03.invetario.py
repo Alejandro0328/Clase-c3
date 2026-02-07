@@ -5,7 +5,7 @@ Contruya un programa en python para gestiona run inventario de una ferreteria us
 
 
 def menu():
-    print("""*** INVENTARI DERRETERIA EL TORNILLO***
+    print("""*** INVENTARIO DE FERETERIA EL TORNILLO***
 1. Agregar producto
 2. Consutar producto
 3. Actulizar produto
@@ -22,19 +22,19 @@ def cargar_datos(dic_inv):
             "nombre": "Martillo de uña",
             "precio": 15000,
             "stock":25,
-            "categoria":"heramientas"
+            "categoria":"Herramientas"
         },
         "DEST002": {
             "nombre":"Destornillador plano",
             "precio": 8000,
             "stock": 40,
-            "categoria":"heramienta"
+            "categoria":"Herramienta"
         },
         "TALA003":{
             "nombre":"Taladro elèctrico",
             "precio": 12000,
             "stock": 8,
-            "categoria":"heramienta electrica"
+            "categoria":"Herramienta electrica"
         }
     }
     return dic_inv
@@ -45,10 +45,10 @@ def agragar_prd(dinv):
     if cod in dinv:
         print(f"Error . el producto còdigo { cod} ya existe. ")
         return dinv
-    nombre =input ("Nombre: ")
+    nombre =input ("Nombre: ").strip().capitalize()
     precio = int (input("Precio: "))
     stock = int (input("Stock: "))
-    categoria= input("Categoria: ")
+    categoria= input("Categoria: ").strip().capitalize()
     dinv[cod]= {
         "nombre": nombre,
         "precio": precio,
@@ -63,11 +63,12 @@ def consultar_todos(dinv):
         print("El inventario esta vacio.")
         return
     print(f"{'Codigo':<10}{'Nombre':<30}{'Precio':<15}{'Stock':<10}{'Categoria':<20}")
-    print("-"* 90)
+    print("="* 90)
 
     for cod ,prd in dinv.items():
         print(f"{cod:<10}{prd['nombre']:<30}${prd['precio']:<15}{prd['stock']:<10}{prd['categoria']:<20}")
     print (f"\n Total de productos: {len(dinv)}\n\n\n")
+    input("\n\nPresione cualquier tecla para continuar..........")
 
 
 def consultar_prd(dinv):
@@ -78,15 +79,63 @@ def consultar_prd(dinv):
         print(f"Nombre: {p['nombre']}")
         print(f"Precio: $ {p['precio']}")
         print(f"Stock: {p['stock']} Unidades")
+        input("\n\nPresione cualquier tecla para continuar..........")
     else:
         print("Ese producto no esta en el sistema")
+        input("\n\nPresione cualquier tecla para continuar..........")
 
 def eliminar_producto(dinv):
-    print("")
+    print("\n\n4.Eliminar Producto\n\n")
     cod=input("Código del producto a eliminar: ").upper()
     if cod not in dinv:
         print("Este producto no existe......")
         return dinv
+    else:
+        prd = dinv.pop(cod)
+        print("\n" + "-"*30)
+        print(f"PRODUCTO ELIMINADO EXITOSAMENTE")
+        print(f"Nombre:    {prd['nombre']}")
+        print(f"Categoría: {prd['categoria']}")
+        print("-"*30 + "\n")
+        input("\n\nPresione cualquier tecla para continuar..........")
+        return dinv
+
+def actulizar_producto(dinv):
+    print("\n\n3.Actulizar Producto\n\n")
+    cod=input("Código del producto a Actulizar: ").upper()
+    if cod not in dinv:
+        print("El producto no existe..........")
+        return dinv
+    elif cod in dinv:
+        nombre = input("Nombre: ").strip().capitalize()
+        precio= int(input("Precio: "))
+        stock = int(input("Stok: "))
+        categoria =input("Categoria: ").strip().capitalize()
+        dinv [cod]={
+            "nombre":nombre,
+            "precio":precio,
+            "stock":stock,
+            "categoria":categoria
+        }
+        return dinv
+
+def buscar_prd(dinv):
+    continuar = True
+    while continuar:
+        print("\n\n5. Buscar producto\n")
+        prd=input("Ingrese el nombre o categoria del producto : ").strip().capitalize()
+        encontrado=False
+        for k , v in dinv.items():
+            if prd in  v['nombre']or prd in v['categoria']:
+                print((f"Encontrados --> Nombre: {v['nombre']} \t|Categoria: { v['categoria']} su codigo es -->{k}"))
+                encontrado= True
+                
+        if not encontrado:
+            print("No hay concidencias encontradas intenta de nuevo.....")
+            input("Presione cualquier tecla para continuar......")
+        rta= input("\n\nDeseas seguir buscando productos?? (Si/N0):  ").strip().capitalize()
+        if rta != "Si":
+            continuar=False
 
 
 
@@ -105,9 +154,11 @@ def main():
         elif op == "2":
             consultar_prd(inventario)
         elif op == "3":
-            pass
+            inventario= actulizar_producto(inventario)
         elif op == "4":
-            pass
+            inventario=eliminar_producto(inventario)
+        elif op== "5":
+            buscar_prd(inventario)
         elif op == "6":
             pass
         elif op == "7":
